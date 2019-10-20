@@ -2,7 +2,7 @@ package domain
 
 type UrlDataRepository interface {
 	Store(urlData UrlData)
-	FindByLongUrl(longUrl string)
+	RetrieveLongUrlFrom(longUrl string)
 }
 
 type UrlData struct {
