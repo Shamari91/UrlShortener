@@ -1,11 +1,16 @@
 package domain
 
+type UrlDataCache interface {
+	Store(urlData UrlData)
+	RetrieveLongUrlFrom(shortUrl string)
+}
+
 type UrlDataRepository interface {
 	Store(urlData UrlData)
-	RetrieveLongUrlFrom(longUrl string)
+	RetrieveLongUrlFrom(shortUrl string)
 }
 
 type UrlData struct {
-	shortUrl string
-	longUrl  string
+	LaongUrl string
+	ShortUrl string
 }
