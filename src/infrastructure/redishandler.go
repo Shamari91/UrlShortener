@@ -20,7 +20,8 @@ func NewRedisClient() *RedisHandler {
 		Password: "",
 		DB:       0,
 	})
+
 	redisHandler := new(RedisHandler)
-	redisHandler.Conn = client
+	redisHandler.Client = client
 	return redisHandler
 }

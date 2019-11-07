@@ -7,7 +7,7 @@ import (
 
 type UrlDataInteractor interface {
 	Shorten(url string) string
-	RetrieveLongUrlFrom(shortUrl string) string
+	Expand(shortUrl string) string
 }
 
 type WebServiceHandler struct {
@@ -26,5 +26,12 @@ func (webServiceHandler WebServiceHandler) CreateShortUrl(res http.ResponseWrite
 }
 
 func (webServiceHandler WebServiceHandler) ExpandShortUrl(res http.ResponseWriter, req *http.Request) {
+	shortUrl := req.FormValue("Url")
+	if len(shortUrl) == 0 {
+		http.Error(res, "Url to expand is missing", http.StatusBadRequest)
+		return
+	}
 
+	longUrl := webServiceHandler.UrlDataInteractor.Expand(shortUrl)
+	io.WriteString(res, longUrl)
 }

@@ -9,22 +9,28 @@ import (
 )
 
 type UrlDataInteractor struct {
+	urlDataCache      domain.UrlDataCache
 	urlDataRepository domain.UrlDataRepository
 }
 
 func (interactor *UrlDataInteractor) Shorten(url string) string {
-	/*shortUrl, err := interactor.urlDataRepository.RetrieveShortUrlFrom(url)
-	if len(shortUrl) > 0 {
-		return shortUrl
-	}*/
-
 	shortUrl := CreateShortUrl(url)
-	//interactor.urlDataRepository.Store(UrlData{shortUrl, url})
+	_, err := interactor.urlDataCache.RetrieveLongUrlFrom(shortUrl)
+	if err != nil {
+		interactor.urlDataCache.Store(&domain.UrlData{
+			ShortUrl: shortUrl,
+			LongUrl:  url,
+		})
+	}
 	return shortUrl
 }
 
-func (interactor *UrlDataInteractor) RetrieveLongUrlFrom(shortUrl string) string {
-	//return string("sfdf")
+func (interactor *UrlDataInteractor) Expand(shortUrl string) string {
+	val, err := interactor.urlDataCache.RetrieveLongUrlFrom(shortUrl)
+	if err != nil {
+		return ""
+	}
+	return val
 }
 
 const ShortUrlPrefix = "ShortUrl/"
